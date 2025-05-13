@@ -3788,11 +3788,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/seif/Travel-app-backend/Travel-app-backend.csproj",
-      "projectName": "Travel-app-backend",
-      "projectPath": "/Users/seif/Travel-app-backend/Travel-app-backend.csproj",
+      "projectUniqueName": "/Users/seif/TravelAppBackend/TravelAppBackend.csproj",
+      "projectName": "TravelAppBackend",
+      "projectPath": "/Users/seif/TravelAppBackend/TravelAppBackend.csproj",
       "packagesPath": "/Users/seif/.nuget/packages/",
-      "outputPath": "/Users/seif/Travel-app-backend/obj/",
+      "outputPath": "/Users/seif/TravelAppBackend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/seif/.nuget/NuGet/NuGet.Config"

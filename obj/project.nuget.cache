@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gOCuGHLCHbU=",
+  "dgSpecHash": "dEgs2sfsFkQ=",
   "success": true,
-  "projectFilePath": "/Users/seif/Travel-app-backend/Travel-app-backend.csproj",
+  "projectFilePath": "/Users/seif/TravelAppBackend/TravelAppBackend.csproj",
   "expectedPackageFiles": [
     "/Users/seif/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/seif/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/9.0.1/microsoft.aspnetcore.authentication.jwtbearer.9.0.1.nupkg.sha512",
