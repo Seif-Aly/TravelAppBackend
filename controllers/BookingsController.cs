@@ -68,7 +68,7 @@ public class BookingsController : ControllerBase
     public async Task<ActionResult<IEnumerable<Booking>>> GetMyBookings()
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
-        var user  = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+        var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
         if (user == null) return Unauthorized();
 
         var list = await _context.Bookings
@@ -86,7 +86,7 @@ public class BookingsController : ControllerBase
         if (booking.UserId == 0)
         {
             var email = User.FindFirstValue(ClaimTypes.Email);
-            var user  = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
             if (user == null) return Unauthorized();
             booking.UserId = user.Id;
         }

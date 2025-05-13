@@ -14,7 +14,7 @@ public class User
     [MaxLength(50)]
     public required string FirstName { get; set; }
 
-    [Column("last_name")]  
+    [Column("last_name")]
     [Required(ErrorMessage = "Last Name is required")]
     [MaxLength(50)]
     public required string LastName { get; set; }

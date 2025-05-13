@@ -10,8 +10,8 @@ namespace TravelAppBackend.models
     {
         [Key][Column("id")] public int Id { get; set; }
 
-        [Column("name")]     public string Name     { get; set; } = "";
-        [Column("capacity")] public int    Capacity { get; set; }
+        [Column("name")] public string Name { get; set; } = "";
+        [Column("capacity")] public int Capacity { get; set; }
 
         [JsonIgnore]
         public ICollection<Tour>? Tours { get; set; } = new List<Tour>();

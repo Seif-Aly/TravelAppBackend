@@ -103,9 +103,9 @@ namespace TravelAppBackend.controllers
             }
 
             if (!string.IsNullOrEmpty(q.FromDate) &&
-                !string.IsNullOrEmpty(q.ToDate)   &&
+                !string.IsNullOrEmpty(q.ToDate) &&
                 DateOnly.TryParseExact(q.FromDate, "yyyy-MM-dd", out var from) &&
-                DateOnly.TryParseExact(q.ToDate,   "yyyy-MM-dd", out var to))
+                DateOnly.TryParseExact(q.ToDate, "yyyy-MM-dd", out var to))
             {
                 var fromUtc = DateTime.SpecifyKind(
                     from.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc);

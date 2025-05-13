@@ -8,7 +8,8 @@ namespace TravelAppBackend.models
     [Table("tour_dates")]
     public class TourDate
     {
-        [Key] [Column("id")]
+        [Key]
+        [Column("id")]
         public int Id { get; set; }
 
         [Column("tour_id")]

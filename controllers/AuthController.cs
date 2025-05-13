@@ -11,7 +11,7 @@ using System.Security.Cryptography;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly TravelAppDbContext _context;  
+    private readonly TravelAppDbContext _context;
 
     public AuthController(TravelAppDbContext context)
     {
@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
             PasswordHash = HashPassword(request.Password),
             FirstName = request.FirstName,
             LastName = request.LastName,
-            Role = request.Role ?? "User" 
+            Role = request.Role ?? "User"
         };
 
         _context.Users.Add(user);
@@ -40,28 +40,28 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-public async Task<IActionResult> Login([FromBody] UserLogin request)
-{
-    var user = await _context.Users.SingleOrDefaultAsync(u => u.Email.ToLower() == request.Email.ToLower());
-    if (user == null || user.PasswordHash != HashPassword(request.Password))
-        return Unauthorized("Invalid credentials.");
-
-    var token = GenerateToken(user);
-
-    Response.Cookies.Append("jwt", token, new CookieOptions
+    public async Task<IActionResult> Login([FromBody] UserLogin request)
     {
-        HttpOnly = true,
-        Secure = false,      
-        SameSite = SameSiteMode.Strict,
-        Expires = DateTime.UtcNow.AddHours(1)
-    });
+        var user = await _context.Users.SingleOrDefaultAsync(u => u.Email.ToLower() == request.Email.ToLower());
+        if (user == null || user.PasswordHash != HashPassword(request.Password))
+            return Unauthorized("Invalid credentials.");
 
-    return Ok(new
-    {
-        message = "Login successful.",
-        token = token  
-    });
-}
+        var token = GenerateToken(user);
+
+        Response.Cookies.Append("jwt", token, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = false,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddHours(1)
+        });
+
+        return Ok(new
+        {
+            message = "Login successful.",
+            token = token
+        });
+    }
 
     [HttpPost("logout")]
     public IActionResult Logout()

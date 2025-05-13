@@ -7,9 +7,9 @@ public class TravelAppDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<Tour> Tours { get; set; }
-    public DbSet<TourDate>  TourDates    { get; set; }
-    public DbSet<RoomType>  RoomTypes    { get; set; }
-    public DbSet<Service>   Services     { get; set; }
+    public DbSet<TourDate> TourDates { get; set; }
+    public DbSet<RoomType> RoomTypes { get; set; }
+    public DbSet<Service> Services { get; set; }
     public DbSet<Booking> Bookings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

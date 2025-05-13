@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.ComponentModel.DataAnnotations;
@@ -15,7 +15,7 @@ public class UpdateUserRequest
     public string Email { get; set; } = "";
 }
 
-[Authorize] 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class UsersController : ControllerBase
@@ -52,7 +52,7 @@ public class UsersController : ControllerBase
     {
         if (!ModelState.IsValid)
         {
-            return BadRequest(ModelState); 
+            return BadRequest(ModelState);
         }
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
@@ -77,13 +77,13 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> PutMe([FromBody] UpdateUserRequest dto)
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
-        var user  = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+        var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
         if (user == null) return NotFound();
         user.PasswordHash = null!;
 
         user.FirstName = dto.FirstName;
-        user.LastName  = dto.LastName;
-        user.Email     = dto.Email;
+        user.LastName = dto.LastName;
+        user.Email = dto.Email;
         await _context.SaveChangesAsync();
         return NoContent();
     }
