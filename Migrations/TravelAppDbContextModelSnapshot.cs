@@ -16,7 +16,7 @@ namespace TravelAppBackend.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("ProductVersion", "9.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -38,25 +38,15 @@ namespace TravelAppBackend.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("tour_id");
 
-                    b.Property<int?>("TourId1")
-                        .HasColumnType("integer");
-
                     b.Property<int>("UserId")
                         .HasColumnType("integer")
                         .HasColumnName("user_id");
-
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TourId");
 
-                    b.HasIndex("TourId1");
-
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("bookings");
                 });
@@ -79,12 +69,7 @@ namespace TravelAppBackend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<int?>("TourId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TourId");
 
                     b.ToTable("room_types");
                 });
@@ -103,12 +88,7 @@ namespace TravelAppBackend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<int?>("TourId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TourId");
 
                     b.ToTable("services");
                 });
@@ -247,45 +227,53 @@ namespace TravelAppBackend.Migrations
                     b.ToTable("users");
                 });
 
+            modelBuilder.Entity("tour_room_types", b =>
+                {
+                    b.Property<int>("RoomTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("RoomTypeId", "TourId");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("tour_room_types");
+                });
+
+            modelBuilder.Entity("tour_services", b =>
+                {
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ServiceId", "TourId");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("tour_services");
+                });
+
             modelBuilder.Entity("Booking", b =>
                 {
-                    b.HasOne("TravelAppBackend.models.Tour", null)
-                        .WithMany()
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TravelAppBackend.models.Tour", "Tour")
                         .WithMany("Bookings")
-                        .HasForeignKey("TourId1");
-
-                    b.HasOne("User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("TourId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("User", "User")
                         .WithMany("Bookings")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Tour");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TravelAppBackend.models.RoomType", b =>
-                {
-                    b.HasOne("TravelAppBackend.models.Tour", null)
-                        .WithMany("Rooms")
-                        .HasForeignKey("TourId");
-                });
-
-            modelBuilder.Entity("TravelAppBackend.models.Service", b =>
-                {
-                    b.HasOne("TravelAppBackend.models.Tour", null)
-                        .WithMany("Services")
-                        .HasForeignKey("TourId");
                 });
 
             modelBuilder.Entity("TravelAppBackend.models.TourDate", b =>
@@ -299,15 +287,41 @@ namespace TravelAppBackend.Migrations
                     b.Navigation("Tour");
                 });
 
+            modelBuilder.Entity("tour_room_types", b =>
+                {
+                    b.HasOne("TravelAppBackend.models.RoomType", null)
+                        .WithMany()
+                        .HasForeignKey("RoomTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TravelAppBackend.models.Tour", null)
+                        .WithMany()
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("tour_services", b =>
+                {
+                    b.HasOne("TravelAppBackend.models.Service", null)
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TravelAppBackend.models.Tour", null)
+                        .WithMany()
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TravelAppBackend.models.Tour", b =>
                 {
                     b.Navigation("AvailableDates");
 
                     b.Navigation("Bookings");
-
-                    b.Navigation("Rooms");
-
-                    b.Navigation("Services");
                 });
 
             modelBuilder.Entity("User", b =>

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 [Authorize]
 [Route("api/[controller]")]
@@ -21,8 +22,8 @@ public class BookingsController : ControllerBase
     {
         Console.WriteLine("Admin endpoint hit");
         return await _context.Bookings
-            .Include(b => b.Tour)         
-            .Include(b => b.User)       
+            .Include(b => b.Tour)
+            .Include(b => b.User)
             .ToListAsync();
     }
 
@@ -36,15 +37,6 @@ public class BookingsController : ControllerBase
 
         if (booking == null) return NotFound();
         return booking;
-    }
-
-    [HttpPost]
-    public async Task<ActionResult<Booking>> PostBooking(Booking booking)
-    {
-        _context.Bookings.Add(booking);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetBooking), new { id = booking.Id }, booking);
     }
 
     [HttpPut("{id}")]
@@ -71,6 +63,41 @@ public class BookingsController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("my")]
+    public async Task<ActionResult<IEnumerable<Booking>>> GetMyBookings()
+    {
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        var user  = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+        if (user == null) return Unauthorized();
+
+        var list = await _context.Bookings
+            .Where(b => b.UserId == user.Id)
+            .Include(b => b.Tour)
+            .OrderByDescending(b => b.BookingDate)
+            .ToListAsync();
+
+        return Ok(list);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Booking>> PostBooking(Booking booking)
+    {
+        if (booking.UserId == 0)
+        {
+            var email = User.FindFirstValue(ClaimTypes.Email);
+            var user  = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+            if (user == null) return Unauthorized();
+            booking.UserId = user.Id;
+        }
+
+        booking.BookingDate = DateTime.UtcNow;
+        _context.Bookings.Add(booking);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetBooking), new { id = booking.Id }, booking);
+    }
+
 
 }
 

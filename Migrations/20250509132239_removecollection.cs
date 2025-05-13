@@ -56,9 +56,9 @@ namespace TravelAppBackend.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_room_types_tours_TourId",
-                table: "room_types");
+            // migrationBuilder.DropForeignKey(
+            //     name: "FK_room_types_tours_TourId",
+            //     table: "room_types");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_services_tours_TourId",

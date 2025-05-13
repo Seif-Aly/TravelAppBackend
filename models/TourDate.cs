@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace TravelAppBackend.models
 {
@@ -17,6 +18,8 @@ namespace TravelAppBackend.models
         public DateTime Date { get; set; }
 
         [ForeignKey("TourId")]
+
+        [JsonIgnore]
         public Tour? Tour { get; set; }
     }
 }

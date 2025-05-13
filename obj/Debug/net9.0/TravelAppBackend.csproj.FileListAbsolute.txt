@@ -136,3 +136,13 @@
 /Users/seif/TravelAppBackend/obj/Debug/net9.0/TravelAppBackend.pdb
 /Users/seif/TravelAppBackend/obj/Debug/net9.0/TravelAppBackend.genruntimeconfig.cache
 /Users/seif/TravelAppBackend/obj/Debug/net9.0/ref/TravelAppBackend.dll
+/Users/seif/TravelAppBackend/bin/Debug/net9.0/Microsoft.Extensions.Caching.Abstractions.dll
+/Users/seif/TravelAppBackend/bin/Debug/net9.0/Microsoft.Extensions.Caching.Memory.dll
+/Users/seif/TravelAppBackend/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/Users/seif/TravelAppBackend/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.dll
+/Users/seif/TravelAppBackend/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/seif/TravelAppBackend/bin/Debug/net9.0/Microsoft.Extensions.Logging.dll
+/Users/seif/TravelAppBackend/bin/Debug/net9.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/seif/TravelAppBackend/bin/Debug/net9.0/Microsoft.Extensions.Options.dll
+/Users/seif/TravelAppBackend/bin/Debug/net9.0/Microsoft.Extensions.Primitives.dll
+/Users/seif/TravelAppBackend/bin/Debug/net9.0/System.Text.Json.dll

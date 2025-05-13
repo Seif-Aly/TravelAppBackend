@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using TravelAppBackend.models;
 
 [Table("bookings")]
@@ -19,6 +20,7 @@ public class Booking
     public DateTime BookingDate { get; set; } = DateTime.UtcNow;
 
     [ForeignKey("UserId")]
+    [JsonIgnore]
     public User? User { get; set; }
 
     [ForeignKey("TourId")]

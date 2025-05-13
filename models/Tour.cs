@@ -8,7 +8,8 @@ namespace TravelAppBackend.models
     [Table("tours")]
     public class Tour
     {
-        [Key] [Column("id")]
+        [Key]
+        [Column("id")]
         public int Id { get; set; }
 
         [Column("title")]
@@ -48,9 +49,9 @@ namespace TravelAppBackend.models
         public decimal PricePerChild { get; set; }
 
         // navigation
-        public ICollection<TourDate>?   AvailableDates { get; set; }
-        public ICollection<RoomType>?   Rooms          { get; set; }
-        public ICollection<Service>?    Services       { get; set; }
-        public ICollection<Booking>?    Bookings       { get; set; }
+        public ICollection<TourDate>? AvailableDates { get; set; }
+        public ICollection<RoomType>? Rooms { get; set; }
+        public ICollection<Service>? Services { get; set; }
+        public ICollection<Booking>? Bookings { get; set; }
     }
 }

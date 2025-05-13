@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 [Table("users")]
 public class User
@@ -29,6 +30,6 @@ public class User
 
     [Required]
     public string Role { get; set; } = "User";
-
+    [JsonIgnore]
     public ICollection<Booking>? Bookings { get; set; }
 }

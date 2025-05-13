@@ -2,6 +2,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore; 
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using System.ComponentModel.DataAnnotations;
+
+public class UpdateUserRequest
+{
+    [Required, MaxLength(50)]
+    public string FirstName { get; set; } = "";
+    [Required, MaxLength(50)]
+    public string LastName { get; set; } = "";
+    [Required, EmailAddress]
+    public string Email { get; set; } = "";
+}
 
 [Authorize] 
 [Route("api/[controller]")]
@@ -21,6 +33,7 @@ public class UsersController : ControllerBase
     {
         return await _context.Users.ToListAsync();
     }
+
 
     // GET: api/Users/5
     [HttpGet("{id}")]
@@ -45,6 +58,34 @@ public class UsersController : ControllerBase
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+    }
+
+    // GET api/Users/me
+    [HttpGet("me")]
+    public async Task<ActionResult<User>> GetMe()
+    {
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        if (email is null) return Unauthorized();
+
+        var user = await _context.Users.AsNoTracking()
+                                       .SingleOrDefaultAsync(u => u.Email == email);
+        return user is null ? NotFound() : Ok(user);
+    }
+
+    // PUT api/Users/me
+    [HttpPut("me")]
+    public async Task<IActionResult> PutMe([FromBody] UpdateUserRequest dto)
+    {
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        var user  = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+        if (user == null) return NotFound();
+        user.PasswordHash = null!;
+
+        user.FirstName = dto.FirstName;
+        user.LastName  = dto.LastName;
+        user.Email     = dto.Email;
+        await _context.SaveChangesAsync();
+        return NoContent();
     }
 
     // PUT: api/Users/5

@@ -85,7 +85,8 @@ public async Task<IActionResult> Login([FromBody] UserLogin request)
         var claims = new[]
         {
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role) 
+            new Claim(ClaimTypes.Role, user.Role),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
 
         var token = new JwtSecurityToken(

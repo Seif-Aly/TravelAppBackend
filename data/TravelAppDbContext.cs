@@ -14,18 +14,48 @@ public class TravelAppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email).IsUnique();
+
         modelBuilder.Entity<Booking>()
-            .HasOne<User>()
-            .WithMany()
+            .HasOne(b => b.User)
+            .WithMany(u => u.Bookings)
             .HasForeignKey(b => b.UserId);
 
         modelBuilder.Entity<Booking>()
-            .HasOne<Tour>()
-            .WithMany()
+            .HasOne(b => b.Tour)
+            .WithMany(t => t.Bookings)
             .HasForeignKey(b => b.TourId);
-        
-         
+
+        modelBuilder.Entity<Tour>()
+            .HasMany(t => t.Services)
+            .WithMany(s => s.Tours)
+            .UsingEntity<Dictionary<string, object>>(
+                "tour_services",
+                r => r.HasOne<Service>()
+                      .WithMany()
+                      .HasForeignKey("ServiceId")
+                      .OnDelete(DeleteBehavior.Cascade),
+                l => l.HasOne<Tour>()
+                      .WithMany()
+                      .HasForeignKey("TourId")
+                      .OnDelete(DeleteBehavior.Cascade));
+
+        modelBuilder.Entity<Tour>()
+            .HasMany(t => t.Rooms)
+            .WithMany(r => r.Tours)
+            .UsingEntity<Dictionary<string, object>>(
+                "tour_room_types",
+                rj => rj.HasOne<RoomType>()
+                        .WithMany()
+                        .HasForeignKey("RoomTypeId")
+                        .OnDelete(DeleteBehavior.Cascade),
+                lj => lj.HasOne<Tour>()
+                        .WithMany()
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade));
     }
 }
 

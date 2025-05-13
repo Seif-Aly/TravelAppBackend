@@ -26,6 +26,7 @@ namespace TravelAppBackend.controllers
                     .Include(t => t.AvailableDates)
                     .Include(t => t.Rooms)
                     .Include(t => t.Services)
+                    .Include(t => t.Bookings)
                     .ToListAsync();
 
                 return Ok(tours);
@@ -45,6 +46,7 @@ namespace TravelAppBackend.controllers
                 .Include(t => t.AvailableDates)
                 .Include(t => t.Rooms)
                 .Include(t => t.Services)
+                .Include(t => t.Bookings)
                 .FirstOrDefaultAsync(t => t.Id == id);
 
             return tour == null ? NotFound() : tour;
@@ -81,6 +83,47 @@ namespace TravelAppBackend.controllers
             _ctx.Tours.Remove(tour);
             await _ctx.SaveChangesAsync();
             return NoContent();
+        }
+        [HttpPost("search")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<Tour>>> Search([FromBody] TourSearchRequest q)
+        {
+            var query = _ctx.Tours
+                .Include(t => t.AvailableDates)
+                .Include(t => t.Rooms)
+                .Include(t => t.Services)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(q.City))
+            {
+                var term = q.City.ToLower();
+                query = query.Where(t =>
+                    t.Title.ToLower().Contains(term) ||
+                    t.Country.ToLower().Contains(term));
+            }
+
+            if (!string.IsNullOrEmpty(q.FromDate) &&
+                !string.IsNullOrEmpty(q.ToDate)   &&
+                DateOnly.TryParseExact(q.FromDate, "yyyy-MM-dd", out var from) &&
+                DateOnly.TryParseExact(q.ToDate,   "yyyy-MM-dd", out var to))
+            {
+                var fromUtc = DateTime.SpecifyKind(
+                    from.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc);
+                var toUtc = DateTime.SpecifyKind(
+                    to.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc);
+
+                query = query.Where(t =>
+                    t.AvailableDates!.Any(d =>
+                        d.Date >= fromUtc && d.Date <= toUtc));
+            }
+
+            if (q.Rooms > 0)
+            {
+                query = query.Where(t => t.Rooms!.Count >= q.Rooms);
+            }
+
+            var results = await query.Take(100).ToListAsync();
+            return Ok(results);
         }
     }
 }
